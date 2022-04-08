@@ -82,9 +82,13 @@ function decode(encoded_data: string): string{
 
 
 
-// Applying a large number of testing cases...
-for (let i = 0; i < 100; i++) {
-    // create data from random bits
+/**
+ * Tests encode and decode functionality by creating random data, encoding it,
+ * simulating transmission and decoding. An error is thrown if the original and
+ * decoded data do not match. 
+ */
+function test_hamming(){
+// create data from random bits
     var testData: string = String(Math.floor(Math.random() * 2))+
         String(Math.floor(Math.random() * 2))+
         String(Math.floor(Math.random() * 2))+
@@ -106,6 +110,13 @@ for (let i = 0; i < 100; i++) {
 
     // check if same as original data
     if (testDecoded != testData) {
-        throw new Error("Decoding unsuccessful");
+        throw new Error("Decoding unsuccessful for original data " + testData + 
+            " and transmitted data " + testEncoded);
     }
 }
+
+// Applying a large number of testing cases...
+for (let i = 0; i < 100; i++) {
+    test_hamming()
+}
+console.log("Test successful")
