@@ -14,10 +14,11 @@ function encode(data: string): string{
     var D2: number = Number(data.charAt(1));
     var D3: number = Number(data.charAt(2));
     var D4: number = Number(data.charAt(3));
-    var P: number = (D1+D2+D3+D4)%2;
     var H1: number = (D1+D2+D4)%2;
     var H2: number = (D1+D3+D4)%2;
     var H3: number = (D2+D3+D4)%2;
+    var P: number = (H1+H2+H3+D1+D2+D3+D4)%2;
+
     return String(P) + String(H1) + String(H2) + String(H3) + data;
 }
 
@@ -34,6 +35,19 @@ function encode(data: string): string{
  * @returns {string} a string of 4 elements representing the original data
  */
 function decode(encoded_data: string): string{
+
+    // for efficiency, start by checking the total parity bit to see if any bit
+    // in the encoded data has been flipped. 
+    var sum: number = 0;                               
+    for (var i = 1; i < encoded_data.length; i++) {  
+        sum += Number(encoded_data[i]);         
+    }
+    if (sum % 2 == Number(encoded_data[0])) {
+        return encoded_data.substring(4,8)
+    }
+
+    // if the parity bit is incorrect, a bit has been flipped. So we use the
+    // Hamming bits to identify and correct it. 
 
     // recalculate Hamming bits
     var D1: number = Number(encoded_data.charAt(4));
