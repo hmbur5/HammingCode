@@ -10,6 +10,13 @@
  * @returns {string} a string of 8 elements representing the encoded byte
  */
 function encode(data: string): string{
+
+    // check input is in the right form, ie. length 4 and elements are 1 or 0
+    if (data.length != 4 ||  !/^[01]*$/.test(data)){
+        throw new Error("Data received: '"+data+"' is not in correct form");
+    }
+
+    // perform encoding
     var D1: number = Number(data.charAt(0));
     var D2: number = Number(data.charAt(1));
     var D3: number = Number(data.charAt(2));
@@ -35,6 +42,11 @@ function encode(data: string): string{
  * @returns {string} a string of 4 elements representing the original data
  */
 function decode(encoded_data: string): string{
+
+    // check input is in the right form before proceeding
+    if (encoded_data.length != 8 ||  !/^[01]*$/.test(encoded_data)){
+        throw new Error("Encoded data received: '"+encoded_data+"' is not in correct form");
+    }
 
     // for efficiency, start by checking the total parity bit to see if any bit
     // in the encoded data has been flipped. 
