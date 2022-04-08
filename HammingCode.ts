@@ -78,3 +78,34 @@ function decode(encoded_data: string): string{
         return String(D1) + String(D2) + String(D3) + String(D4);
     }
 }
+
+
+
+
+// Applying a large number of testing cases...
+for (let i = 0; i < 100; i++) {
+    // create data from random bits
+    var testData: string = String(Math.floor(Math.random() * 2))+
+        String(Math.floor(Math.random() * 2))+
+        String(Math.floor(Math.random() * 2))+
+        String(Math.floor(Math.random() * 2))
+
+    // encode data
+    var testEncoded: string = encode(testData)
+
+    // simulate transmission by occasionally flipping of one random bit
+    if (Math.floor(Math.random() * 2)) {
+        var bit: number = Math.floor(Math.random() * 8)
+        testEncoded = testEncoded.substring(0,bit) + 
+            String(1-Number(testEncoded.charAt(bit))) + 
+            testEncoded.substring(bit+1,8)
+    }
+
+    // decode data
+    var testDecoded: string = decode(testEncoded)
+
+    // check if same as original data
+    if (testDecoded != testData) {
+        throw new Error("Decoding unsuccessful");
+    }
+}
